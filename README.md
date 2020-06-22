@@ -57,18 +57,16 @@
 MySQL 관리 웹페이지로 들어가 회원가입시 기입하는 정보를 저장하는 테이블 생성한다.
 ![sql테이블](https://user-images.githubusercontent.com/62593452/85231107-79507500-b42f-11ea-92d9-59a3e70dccef.PNG)
 
+
 >#### 2-1-2 안드로이드 스튜디오와 서버연결
 Volley API 를 이용한 HTTP 통신을 위해 build.gradle파일에 implementation해준다.
-<pre>
-<code>
+~~~xml
 implementation 'com.android.volley:volley:1.1.1'
-</code>
-</pre>
+~~~
+
 안드로이드 스튜디오에서 서버로 정보를 전송하기위한 Login.php / Register.php 파일을 생성한다.   
 ##### Login.php
-<pre>
-<code>
-
+~~~php
     $con = mysqli_connect("localhost", "assa", "tkdaud1!", "assa");
     mysqli_query($con,'SET NAMES utf8');
 
@@ -95,13 +93,10 @@ implementation 'com.android.volley:volley:1.1.1'
     }
 
     echo json_encode($response);
-
-</code>
-</pre>
+~~~
 
 ##### Register.php
-<pre>
-<code>
+~~~php
     $con = mysqli_connect("localhost", "assa", "tkdaud1!", "assa");
     mysqli_query($con,'SET NAMES utf8');
 
@@ -120,8 +115,7 @@ implementation 'com.android.volley:volley:1.1.1'
  
    
     echo json_encode($response);
-</code>
-</pre>
+~~~
 
 2개의 파일을 FileZilla를 이용하여 html폴더에 추가해준다.    
 ![fillzilla](https://user-images.githubusercontent.com/62593452/85231104-76558480-b42f-11ea-8bfa-6faaf3dd6ac2.PNG)   
@@ -133,16 +127,15 @@ implementation 'com.android.volley:volley:1.1.1'
 [kakao app등록 링크](https://developers.kakao.com/)   
 ![카카오톡등록](https://user-images.githubusercontent.com/62593452/85231709-7c019900-b434-11ea-98f0-0b163564188c.png)   
 Buildgradle(app)파일에 카카오 로그인을 위한 sdk, url을 추가해준다.
-<pre>
-<code>
+
+~~~java
+
 dependencies {
     implementation 'com.kakao.sdk:usermgmt:1.29.0'
 }
+~~~
 
-</code>
-</pre>
-<pre>
-<code>
+~~~java
 allprojects {
     repositories {
 
@@ -154,26 +147,23 @@ allprojects {
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 }
-</code>
-</pre>
+~~~
+
 manifest파일에 카카오 로그인에 필요한 인터넷연결을 permission하고 AppKey와 네이티브 키를 입력한다.
-<pre>
-<code>
+~~~java
 uses-permission android:name="android.permission.INTERNET"
-</pre>
-</code>
-<pre>
-<code>
+~~~
+
+~~~java
 meta-data
     android:name="com.kakao.sdk.AppKey"
     android:value="네이티브 키"
-</pre>
-</code>
+~~~
 
 카카오 로그인을 하기위해 해시 키를 생성 후 카카오 디벨로퍼에 입력해준다.
 ##### 해시 키 생성
-<pre>
-<code>
+
+~~~java
 private void getAppKeyHash() {
     try {
         PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
@@ -189,38 +179,13 @@ private void getAppKeyHash() {
         Log.e("name not found", e.toString());
     }
 }
-</code>
-</pre>
+~~~
+
 ##### logcat창에 나오는 HashKey
 ![해시키](https://user-images.githubusercontent.com/62593452/85231710-7c9a2f80-b434-11ea-8124-d118791b0e7b.png)    
 ##### 해시 키 등록
 ![해시키등록](https://user-images.githubusercontent.com/62593452/85231707-7ad06c00-b434-11ea-8227-65cfb3187d6c.png)     
 
->#### 2-1-4 원형 프로필
-원형 프로필을 만들기 위해서는 Buildgradle(app)에 지정을 해준다.
-<pre>
-<code>
-annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-implementation 'de.hdodenhof:circleimageview:2.2.0'
-</code>
-</pre>   
-layout 설정 후 string변수를 이용하여 LoginActivity에서 보낸 정보를 받아온다.
-<pre>
-<code>
-CircleImageView ivProfile = findViewById(R.id.ivProfile);
-
-   Intent intent = getIntent();
-
-    strProfile = intent.getStringExtra("profile");
-
-Glide.with(this).load(strProfile).into(ivProfile);
-</code>
-</pre>
-##### 원형프로필
-![원형프로필](https://user-images.githubusercontent.com/62593452/85231708-7c019900-b434-11ea-8394-b2ee8c21b71c.png)   
-
-    
-    
 
 >### 2-2 Google Map
 Google Map을 기반으로 지도를 구현한다.    
@@ -228,17 +193,15 @@ Google Map에 엑세스하기 위해서는 최소 SDK레벨 2.0 이여야한다.
 1)Google 계정 및 GoogleMap 계정 및 API Key 발급받는다.   
 2)Google console developer 사이트에 방문하여 새 프로젝트를 생성 후 API Key발급받고   
 AndroidManifest.xml파일에 추가해준다.
-<pre>
-<code>
+~~~java
  meta-data
     android:name="com.google.android.geo.API_KEY"
     android:value="API키"
-</code>
-</pre>   
+~~~  
 
 3)Module app에 GooglePlayServices를 사용하기 위한 코드를 추가해준다.
-<pre>
-<code>
+
+~~~java
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -248,23 +211,21 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
-</code>
-</pre>    
+~~~  
 
 4)activity_main.xml layout파일에 <fragment>태그를 지도가 표시될 위치에 적어준다.
-<pre>
-<code>
+
+~~~java
     fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-</code>
-</pre>   
+~~~
+
 지도를 포함하는 MainActivity.java파일에 코드를 추가해준다.
-<pre>
-<code>
+~~~java
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -338,14 +299,12 @@ mActivity = this;
     mapFragment.getMapAsync(this);
 
 }
-</code>
-</pre>    
+~~~   
 
 
 >>#### 2-2-1 지도상 내위치 표시
 1)내 기기의 위치를 지도상에 표시해주기 위해서 권한 요청을 요구하는 코드와 GPS 활성화를 위한 코드를 추가해준다.
-<pre>
-<code>
+~~~java
 private void showDialogForLocationServiceSetting() {
 
     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -396,14 +355,13 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             break;
     }
 }
-</code>
-</pre>    
+~~~  
 
 2)위 코드를 작성하면 퍼미션 검사를 통해 GPS 활성화가 진행된다.   
 3)Geocorder를 이용한 내 위치를 불러오는 코드와 나의 위치로 카메라 포지션을 변경해 주기 위한 코드를 MainActivity에 추가해준다.
 ##### Geocorder를 이용한 내위치 불러오기
-<pre>
-<code>
+
+~~~java
 public String getCurrentAddress(LatLng latlng) {
 
     //지오코더... GPS를 주소로 변환
@@ -493,11 +451,10 @@ public void setCurrentLocation(Location location, String markerTitle, String mar
     mGoogleMap.moveCamera(cameraUpdate);
 
 }
-</code>
-</pre>    
+~~~
+
 ##### 나의 위치로 카메라 포지션 변경
-<pre>
-<code>
+~~~java
 mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
 
     @Override
@@ -556,8 +513,7 @@ public void onLocationChanged(Location location) {
 
     mCurrentLocatiion = location;
 }
-</code>
-</pre>
+~~~
 
 
 
@@ -566,8 +522,7 @@ public void onLocationChanged(Location location) {
 1)AI상대들을 지도에 표시하기 위해 생성할 좌표를 확인한다.   
 2)AI를 지도상에 나타내기 위해 MainActivity.java를 생성 후 개체 생성 코드에 해당 좌표를 삽입하여 생성한다.
 ##### AI 대결상대인 한누리관   
-<pre>
-<code>
+~~~java
 MarkerOptions marker = new MarkerOptions();
 marker .position(new LatLng(36.834258, 127.179241))
         .title("한누리관")
@@ -586,16 +541,14 @@ googleMap.addMarker(marker).showInfoWindow();
         locationA.setLatitude(36.834258);  //한누리//
         locationA.setLongitude(127.179241);
     }
-</code>
-</pre>
+~~~
 
 
 >>#### 2-2-3 대결 가능 거리 설정    
 2-2-2에서 AI대결상대를 생성 후 대결상대와 내 위치가 10M 이상으로 차이가 난다면 게임 실행이 안된다.    
 1)10M 이상의 차이가 나는지 확인하기 위해 거리를 계산해주는 코드를 MainActivity.java에 추가한다.
 ##### AI 대결상대인 한누리관의 거리를 계산
-<pre>
-<code>
+~~~java
 double distanceMeter4 =
         distance(currentPosition.latitude, currentPosition.longitude, 36.834258, 127.179241, "meter"); //한누리//
 
@@ -629,13 +582,11 @@ private static double deg2rad(double deg) {
 
 private static double rad2deg(double rad) {
     return (rad * 180 / Math.PI);
-</code>
-</pre>    
+~~~ 
 
 3)2)에서 코드를 작성 후 내 위치와 상대의 위치를 비교하기 위해 상대와 내 위치 데이터를 불러와 10M 이내이면 UnityPlayerActivity가 실행되며, 10M 이외이면 몇M 떨어져 있는지 알려주는 Toast 메세지를 출력한다.
 ##### AI 대결상대인 한누리관과 내 위치를 비교
-<pre>
-<code>
+~~~java
             if (marker.getTitle().equals("한누리관"))
             {
                 if(distanceMeter4<=10) {
@@ -647,23 +598,516 @@ private static double rad2deg(double rad) {
                     Toast.makeText(getApplicationContext(), "NPC 한누리관과의 거리가 "+ i4 + "M만큼 떨어져 있습니다." , Toast.LENGTH_LONG).show();
                 }
             }
-</code>
-</pre>    
+~~~    
+
+
+>### 2-3 안드로이드 스튜디오에서 구현한 기능
+
+>#### 2-3-1 원형 프로필
+원형 프로필을 만들기 위해서는 Buildgradle(app)에 지정을 해준다.
+~~~java
+annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+implementation 'de.hdodenhof:circleimageview:2.2.0'
+~~~ 
+layout 설정 후 string변수를 이용하여 LoginActivity에서 보낸 정보를 받아온다.
+~~~java
+CircleImageView ivProfile = findViewById(R.id.ivProfile);
+
+   Intent intent = getIntent();
+
+    strProfile = intent.getStringExtra("profile");
+
+Glide.with(this).load(strProfile).into(ivProfile);
+~~~
+
+##### 원형프로필
+![원형프로필](https://user-images.githubusercontent.com/62593452/85231708-7c019900-b434-11ea-8394-b2ee8c21b71c.png)   
+
+    
+2-3-2 팝업창
+지도가 나오는 화면에서 카카오 로그인 시에는 왼쪽 상단에 자신의 카카오 프로필 사진이 나오며, 일반 로그인 시에는 지정된 이미지가 나오게 된다.
+그리고 이미지를 클릭 시 팝업 창이 나오며 카카오 로그인 시에는 이름이, 일반 로그인 시에는 가입할 때 사용한 아이디가 나오며 로그아웃 버튼 또한 있다.
+
+Menifest파일에 팝업창으로 열기 위해 테마를 Dialog로 지정해 준다.
+
+~~~java
+<activity android:name=".Main3Activity" android:theme="@android:style/Theme.Dialog"/>
+~~~
+
+Layout의 원형 프로필 사진에 onclick을 지정 해준다.
+
+~~~java
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/ivProfile"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:layout_marginLeft="10dp"
+
+    android:layout_marginTop="10dp"
+    android:onClick="mOnPopupClick"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="OnClick" />
+~~~
+
+
+MainActivity에 프로필 사진을 클릭하게 되면 팝업 창이 나오도록 
+Intent 해준다. 이때 카카오 프로필 사진과 이름을 Activity 간 전송해 주어야 한다.
+
+~~~java
+public void mOnPopupClick(View v){
+    //데이터 담아서 팝업(액티비티) 호출
+    Intent intent = new Intent(MainActivity.this, Main3Activity.class);
+
+    intent.putExtra("profile", strProfile);
+
+
+    intent.putExtra("name", strNickname);
+    startActivity(intent);
+}
+~~~
+
+Dialog창으로 나오지만 상단의 타이틀 바로 나오지 않게 지정한다.
+
+~~~java
+String strNickname1, strProfile1;
+
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //타이틀바 없애기
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activitiy_main3);
+        Button btnLogout = findViewById(R.id.logoutbtn);
+        //UI 객체생성
+
+MainActivty에서 보낸 이름과 프로필 사진을 다시 받고 현재의 Layout에 지정하여 준다.
+TextView tvNickname = findViewById(R.id.Nik);
+ImageView ivProfile = findViewById(R.id.ivProfile);
+
+//데이터 가져오기
+Intent intent = getIntent();
+strNickname1 = intent.getStringExtra("name");
+strProfile1 = intent.getStringExtra("profile");
+tvNickname.setText(strNickname1);
+
+Glide.with(this).load(strProfile1).into(ivProfile);
+~~~
+
+확인 버튼을 클릭 시 팝업 창을 닫을 수 있도록 한다.
+
+~~~java
+public void mOnClose(View v){
+    //데이터 전달하기
+    Intent intent = new Intent();
+    intent.putExtra("result", "Close Popup");
+    setResult(RESULT_OK, intent);
+
+    //액티비티(팝업) 닫기
+    finish();
+}
+~~~
+
+팝업 창 바깥 레이어 클릭 시에는 팝업 창이 닫히지 않도록 한다.
+또한 스마트폰의 백 버튼 또한 잠궈준다.
+
+~~~java
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+    //바깥레이어 클릭시 안닫히게
+    if(event.getAction()==MotionEvent.ACTION_OUTSIDE){
+        return false;
+    }
+    return true;
+}
+
+@Override
+public void onBackPressed() {
+    //안드로이드 백버튼 막기
+    return;
+}
+~~~
+
+로그아웃을 하기 위해 Layout에 버튼을 만들어 준다. 
+~~~java
+<Button
+    android:id="@+id/logoutbtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="90dp"
+    android:layout_marginTop="44dp"
+
+    android:text="로그아웃"
+    app:layout_constraintLeft_toLeftOf="@id/ivProfile"
+    app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+~~~
+
+로그아웃을 위한 클릭 메소드를 입력한다.
+~~~java
+btnLogout.setOnClickListener(new Button.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getApplicationContext(), "정상적으로 로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+
+        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+                Intent intent = new Intent(Main3Activity.this, StartActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+});
+~~~
 
 
 
 
->### 2-3 Unity를 이용한 게임
->>#### 2-3-1 고스톱 알고리즘
->>>##### 2-3-1-1 Player
->>>##### 2-3-1-2 AI
 
->>#### 2-3-2 특수효과
->>>##### 2-3-2-1 효과음
+
+##### 팝업창 이미지
+![팝업창이미지](https://user-images.githubusercontent.com/62593452/85271959-79e01e80-b4b6-11ea-9ca9-593d1f714428.jpg)  
+
+
+2-3-3 수익성 측면
+수익성을 얻기 위해 LoginActivity와 MainActivity에 하단 배너 광고를 추가하였다
+Google AdMob에 가입한 후 APP을 등록 한다.
+
+##### Google AdMob 이미지
+![AdMob](https://user-images.githubusercontent.com/62593452/85271973-7ea4d280-b4b6-11ea-8fe3-5bcae75b3b03.png)   
+
+https://admob.google.com/intl/ko_ALL/home/?gclid=CjwKCAjwrcH3BRApEiwAxjdPTVkrX0stPQB6hiwrMiF_L6b4KOwC7RZXPFJ13Z7h87UP6IGMh-p2QxoCi-sQAvD_BwE
+
+Build.gradle(app) 에 광고를 하기 위한 코드를 추가한다.
+
+~~~java
+implementation 'androidx.appcompat:appcompat:1.0.2'
+implementation 'com.google.android.gms:play-services-ads:19.1.0'
+~~~
+
+Menifest에 meta-data를 추가한다.
+Android:value 에는 광고의 ID를 넣게 되는데, 전면광고, 배너광고, 전면 동영상 광고, 보상형 동영상 광고 등 여러 광고마다 ID가 다르다.
+
+~~~java
+meta-data
+    android:name="com.google.android.gms.ads.APPLICATION_ID"
+    android:value="ca-app-pub-3940256099942544~3347511713"
+~~~
+
+광고를 넣을 Layout에 광고를 추가하고 크기를 맞춘다.
+
+~~~java
+Activity_main.Layout
+FrameLayout
+    android:id="@+id/ad_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="660dp" 
+~~~
+
+Layout에 맞는 Java 파일에 광고의 초기화 및 여러 설정을 적어준다.
+
+~~~java
+private AdView adView;
+private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741";
+private FrameLayout adContainerView;
+
+MobileAds.initialize(this, new OnInitializationCompleteListener() {
+    @Override
+    public void onInitializationComplete(InitializationStatus initializationStatus) {}
+});
+
+// Set your test devices. Check your logcat output for the hashed device ID to
+// get test ads on a physical device. e.g.
+// "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+// to get test ads on this device."
+MobileAds.setRequestConfiguration(
+        new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345")).build());
+
+adContainerView = findViewById(R.id.ad_view_container);
+
+// Since we're loading the banner based on the adContainerView size, we need to wait until this
+// view is laid out before we can get the width.
+adContainerView.post(new Runnable() {
+    @Override
+    public void run() {
+        loadBanner();
+    }
+});
+/** Called when leaving the activity */
+@Override
+public void onPause() {
+    if (adView != null) {
+        adView.pause();
+    }
+    super.onPause();
+}
+
+private void loadBanner() {
+    // Create an ad request.
+    adView = new AdView(this);
+    adView.setAdUnitId(AD_UNIT_ID);
+    adContainerView.removeAllViews();
+    adContainerView.addView(adView);
+
+    AdSize adSize = getAdSize();
+    adView.setAdSize(adSize);
+
+    AdRequest adRequest = new AdRequest.Builder().build();
+
+    // Start loading the ad in the background.
+    adView.loadAd(adRequest);
+}
+
+private AdSize getAdSize() {
+    // Determine the screen width (less decorations) to use for the ad width.
+    Display display = getWindowManager().getDefaultDisplay();
+    DisplayMetrics outMetrics = new DisplayMetrics();
+    display.getMetrics(outMetrics);
+
+    float density = outMetrics.density;
+
+    float adWidthPixels = adContainerView.getWidth();
+
+    // If the ad hasn't been laid out, default to the full screen width.
+    if (adWidthPixels == 0) {
+        adWidthPixels = outMetrics.widthPixels;
+    }
+
+    int adWidth = (int) (adWidthPixels / density);
+
+    return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
+}
+~~~
+
+
+
+
+
+하단 배너에 광고가 나오게 된다.
+
+##### 광고 이미지
+![광고이미지](https://user-images.githubusercontent.com/62593452/85271974-7f3d6900-b4b6-11ea-8b66-36339807c626.jpg)
+![광고이미지2](https://user-images.githubusercontent.com/62593452/85271976-7fd5ff80-b4b6-11ea-95f6-9c43f76e6abb.jpg)    
+
+
+
+
+
+
+
+
+
+
+
+>### 2-4 Unity를 이용한 게임
+>>#### 2-4-1 고스톱 알고리즘
+>>>##### 2-4-1-1 Player
+>>>##### 2-4-1-2 AI
+
+>>#### 2-4-2 특수효과
+고스톱을 하다 보면 특정한 상황 발생 시 그에 맞는 오브젝트가 나와야 한다.
+그런 상황에 맞는 오브젝트를 만들어 상황이 발생하게 되면 Instance 시킨다.
+
+##### 아틀라스 이미지
+![아틀라스이미지](https://user-images.githubusercontent.com/62593452/85271978-806e9600-b4b6-11ea-87b9-5e8f57a7f8eb.png)   
+  
+예를 들어 폭탄의 경우를 설명하자면 이미지들을 아틀라스하여 자른 후
+프리팹을 만들어 Sprite를 지정해준다
+
+##### 폭탄 프리팹 이미지
+![폭탄프리팹](https://user-images.githubusercontent.com/62593452/85271979-806e9600-b4b6-11ea-891c-88b3a2b8a859.png)   
+
+~~~cs
+public class EffectManager : SingletonMonobehaviour<EffectManager>
+{
+// 이벤트별 이펙트 객체.
+Dictionary<CARD_EVENT_TYPE, GameObject> effects;
+GameObject dust;
+
+
+void Awake()
+{
+this.effects = new Dictionary<CARD_EVENT_TYPE, GameObject>();
+}
+
+
+public void load_effects()
+{
+load_effect(CARD_EVENT_TYPE.BOMB, "ef_explosion");
+}
+
+
+void load_effect(CARD_EVENT_TYPE event_type, string effect_name)
+{
+if (this.effects.ContainsKey(event_type))
+{
+Debug.LogError(string.Format("Already added this effect.  event type {0}, effect name {1}",
+event_type, effect_name));
+}
+
+GameObject obj = GameObject.Instantiate(Resources.Load("effects/" + effect_name)) as GameObject;
+
+obj.SetActive(false);
+this.effects.Add(event_type, obj);
+}
+
+
+public void play(CARD_EVENT_TYPE event_type)
+{
+if (!this.effects.ContainsKey(event_type))
+{
+return;
+}
+
+this.effects[event_type].SetActive(true);
+}
+
+
+public void play_dust(Vector3 position, float delay, bool is_big)
+{
+StopAllCoroutines();
+GameObject target = this.dust;
+
+target.SetActive(false);
+target.transform.position = position;
+StartCoroutine(run_dust_effect(target, delay));
+}
+
+IEnumerator run_dust_effect(GameObject obj, float delay)
+{
+yield return new WaitForSeconds(delay);
+
+obj.SetActive(true); }}
+~~~
+
+Visual Studio에서 Effect 이미지를 불러와준다.
+또한 이미지 출력 후 1.5초 후 사라지게 해준다.
+
+~~~cs
+public class CDelayedDeactive : MonoBehaviour {
+
+[SerializeField]
+float delay;
+
+
+void OnEnable() //검정대기화면//
+{
+StopAllCoroutines();
+StartCoroutine(delayed_deactive());
+}
+
+
+IEnumerator delayed_deactive()
+{
+yield return new WaitForSeconds(this.delay);
+gameObject.SetActive(false);}}
+~~~
+
+##### Sprite Renderer 이미지
+![Sprite이미지](https://user-images.githubusercontent.com/62593452/85271981-81072c80-b4b6-11ea-986f-63266014fc37.png)
+
+
+1고,2고… 의 경우
+1고부터 시작되는 고의 경우엔 일반적인 방식으로는 많이 불편하다.
+그래서 Visaul Studio에서 Count하여 각 상황에 맞는 이미지를 순차적으로 넣어주었다.
+
+~~~cs
+public class PopupGo : MonoBehaviour
+    {
+
+    List<Sprite> go_images;
+Image go;
+
+void Awake()
+{
+this.go_images = new List<Sprite>(); //스프라이트 이미지 불러오기//
+    for (int i = 1; i <= 9; ++i) //for문 i를 1~9까지 돌린다//
+    {
+    Sprite spr = CSpriteManager.Instance.get_sprite(string.Format("go_{0:D2}", i));  //CSpriteManager에서 아틀라스한 이미지 중 go_01~go_09까지 불러온다//
+    this.go_images.Add(spr); //이미지를 spr에 더한다//
+    }
+
+    this.go = transform.Find("image").GetComponent<Image>(); //Hierarchy의 image를 찾아 넣는다//
+        }
+
+
+        public void refresh(int howmany_go) //go이미지를 하나 넣을때마다 refesh하여 다음 이미지를 넣게 한다.//
+        {
+        if (howmany_go <= 0 || howmany_go >= 10)
+        {
+        return;
+        }
+
+        this.go.sprite = this.go_images[howmany_go - 1];
+        }
+        }
+~~~
+
+##### Popup_go 이미지
+![Popup이미지](https://user-images.githubusercontent.com/62593452/85271985-849ab380-b4b6-11ea-962a-8a5db99c84a3.png)
+
+>>>##### 2-4-2-1 효과음
 효과음이 필요한 오브젝트가 많아 오브젝트마다 효과음을 넣으면 비효율적이어서 효과음 오브젝트를 만들어서 효과음이 필요한 부분에 각자 코드로 적용시켜 효율적인 효과음 재생이 가능하다.
->>>##### 2-3-2-2 카드 효과(Card Hitting)
+>>>##### 2-4-2-2 카드 효과(Card Hitting)
 전체적인 카드의 움직임은 앱을 구동시키는 기기의 성능에 따라 움직임이 자연스러워 보이기도 하고 부자연스러워 보이기도 하기에 최대한 성능에 구애받지 않는 퍼포먼스를 보여주기 위해 Time.time을 이용해 시간이 흘러가는것에 따라 카드의 움직임을 조절가능하게 하였다.
->>>##### 2-3-2-3 보간 함수
-각종 보간함수를 통해 오브젝트를 부드럽게 이동시키거나 회전 가능하게 하였다. 보간함수 같은 경우는
+>>>##### 2-4-2-3 보간 함수
+각종 보간함수를 통해 오브젝트를 부드럽게 이동시키거나 회전 가능하게 하였다. 보간함수 같은 경우는 복잡한 수학식으로 되있어서 이해하기는 힘들지만 예제가 많아서 내가 필요로 하는 기능만 가져다 사용하면 된다.   
+~~~cs
+public static class EasingUtil
+{
+    public static float linear(float start, float end, float value)
+    {
+        return Mathf.Lerp(start, end, value);
+    }
+    public static float easeInExpo(float start, float end, float value)
+    {
+        end -= start;
+        return end * Mathf.Pow(2, 10 * (value / 1 - 1)) + start;
+    }
+}
+~~~
+
+esaeInExpo가 사용된 run_moving() 카드를 이동시키고자 하는 위치를 
+~~~cs
+IEnumerator run_moving()
+	{
+		this.sprite_renderer.sortingOrder = CSpriteLayerOrderManager.Instance.Order;
+
+		float begin_time = Time.time;
+		while (Time.time - begin_time <= duration)
+		{
+			float t = (Time.time - begin_time) / duration;
+
+			float x = EasingUtil.easeInExpo(begin.x, to.x, t);
+			float y = EasingUtil.easeInExpo(begin.y, to.y, t);
+			transform.position = new Vector3(x, y, 0);
+
+			yield return 0;
+		}
+		transform.position = to;
+	}
+~~~
+
+
+![1번](https://user-images.githubusercontent.com/62593452/85271987-85334a00-b4b6-11ea-815a-d70b1c88d82c.png)
+![2번](https://user-images.githubusercontent.com/62593452/85271989-85cbe080-b4b6-11ea-9120-dd85b49ebcf0.png)
+![3번](https://user-images.githubusercontent.com/62593452/85271990-86647700-b4b6-11ea-8e82-ee2896fb3ece.png)
+![4번](https://user-images.githubusercontent.com/62593452/85271992-86647700-b4b6-11ea-9eb8-73cc7c94b968.png)
+![1](https://user-images.githubusercontent.com/62593452/85274000-523e8580-b4b9-11ea-801a-488408efa5df.png)
+![2](https://user-images.githubusercontent.com/62593452/85274002-536fb280-b4b9-11ea-89f6-5b3b11b68f23.png)
+![3](https://user-images.githubusercontent.com/62593452/85274004-536fb280-b4b9-11ea-82af-7d54b265be9a.jpg)
+![4](https://user-images.githubusercontent.com/62593452/85274008-54084900-b4b9-11ea-9d4a-1d112b516681.jpg)
+![5](https://user-images.githubusercontent.com/62593452/85274010-54a0df80-b4b9-11ea-9499-2070d4b5effb.jpg)
+![6](https://user-images.githubusercontent.com/62593452/85274012-55397600-b4b9-11ea-9238-02ee0d58d6bb.png)
+![7](https://user-images.githubusercontent.com/62593452/85274017-55d20c80-b4b9-11ea-9f43-df94531c21bb.png)
+![8](https://user-images.githubusercontent.com/62593452/85274020-55d20c80-b4b9-11ea-8d8a-d5347e500a69.png)
+![9](https://user-images.githubusercontent.com/62593452/85274022-566aa300-b4b9-11ea-80de-5077f149c8d6.png)
+![10](https://user-images.githubusercontent.com/62593452/85274023-566aa300-b4b9-11ea-9a2b-8c6ed9d12c78.png)
+
 
 
